@@ -6,7 +6,6 @@
     <title>Flores Virtuais</title>
     <style>
         body {
-            /* Cor de fundo */
             background-color: #fcf4e6;
             margin: 0;
             display: flex;
@@ -53,7 +52,6 @@
             bottom: 0;
         }
 
-        /* --- REGRAS PARA ADAPTAR À TELA DO CELULAR --- */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -118,8 +116,8 @@
         setTimeout(typeWriter, 500); 
 
         // --- 2. CONTADOR DE TEMPO ---
-        // Lembre-se de alterar a data abaixo (Ano, Mês -1, Dia)
-        const startDate = new Date(2022, 8, 21); 
+        // Data atualizada: 09/05/2025 (Mês 4 pois Janeiro é 0)
+        const startDate = new Date(2025, 4, 9); 
 
         function updateTimer() {
             const now = new Date();
@@ -136,7 +134,7 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // --- 3. DESENHO DA ÁRVORE COM FLORES (CANVAS) ---
+        // --- 3. DESENHO DA ÁRVORE COM FLORES ---
         const canvas = document.getElementById('treeCanvas');
         const ctx = canvas.getContext('2d');
 
