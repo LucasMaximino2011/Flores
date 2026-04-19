@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flores Amarillas</title>
+    <title>Flores Virtuais</title>
     <style>
         body {
             /* Cor de fundo */
@@ -56,7 +56,7 @@
         /* --- REGRAS PARA ADAPTAR À TELA DO CELULAR --- */
         @media (max-width: 768px) {
             body {
-                flex-direction: column; /* Empilha o texto e a árvore */
+                flex-direction: column;
             }
             .left-panel {
                 padding: 30px 20px 10px 20px;
@@ -68,15 +68,14 @@
                 width: 100%;
             }
             #text-container {
-                font-size: 1rem; /* Diminui a fonte do texto um pouco */
+                font-size: 1rem; 
                 min-height: 130px;
                 margin-bottom: 20px;
             }
             #timer {
-                font-size: 1.2rem; /* Diminui a fonte do contador */
+                font-size: 1.2rem; 
             }
             canvas {
-                /* Faz a árvore encolher proporcionalmente para caber na tela */
                 max-width: 100vw;
                 max-height: 55vh; 
                 object-fit: contain;
@@ -90,7 +89,7 @@
     <div class="left-panel">
         <div id="text-container"></div>
         <div class="timer-container">
-            <div class="timer-title">Mi amor por ti comenzó hace...</div>
+            <div class="timer-title">Meu amor por você começou há...</div>
             <div id="timer">0 dias 0 horas 0 minutos 0 segundos</div>
         </div>
     </div>
@@ -101,7 +100,7 @@
 
     <script>
         // --- 1. EFEITO DE MÁQUINA DE ESCREVER ---
-        const message = "Flores Amarillas para el amor de mi vida:\n\nSi pudiera elegir un lugar seguro, seria a tu lado.\n\nCuanto más tiempo estoy contigo más te amo.\n\n- I Love You!";
+        const message = "Que demora para me responder, tô aqui sofrendo sem você\n\nMas vou deixar essa flor virtual ae para você, meu amor\n\nSe eu pudesse escolher, eu escolheria você infinitas vezes";
         const textContainer = document.getElementById("text-container");
         let charIndex = 0;
 
