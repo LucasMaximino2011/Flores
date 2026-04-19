@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flores Amarillas</title>
+    <style>
+        body {
+            /* Cor de fundo semelhante ao do vídeo */
+            background-color: #fcf4e6;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+        .left-panel {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+        .right-panel {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+        }
+        #text-container {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            min-height: 200px;
+            margin-bottom: 40px;
+        }
+        .timer-container {
+            font-size: 1rem;
+            color: #555;
+        }
+        .timer-title {
+            margin-bottom: 10px;
+        }
+        #timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #b8860b;
+        }
+        canvas {
+            position: absolute;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-panel">
+        <div id="text-container"></div>
+        
+        <div class="timer-container">
+            <div class="timer-title">Mi amor por ti comenzó hace...</div>
+            <div id="timer">0 dias 0 horas 0 minutos 0 segundos</div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <canvas id="treeCanvas" width="500" height="600"></canvas>
+    </div>
+
+    <script>
+        // --- 1. EFEITO DE MÁQUINA DE ESCREVER ---
+        const message = "Flores Amarillas para el amor de mi vida:\n\nSi pudiera elegir un lugar seguro, seria a tu lado.\n\nCuanto más tiempo estoy contigo más te amo.\n\n- I Love You!";
+        const textContainer = document.getElementById("text-container");
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (charIndex < message.length) {
+                if (message.charAt(charIndex) === '\n') {
+                    textContainer.innerHTML += "<br>";
+                } else {
+                    textContainer.innerHTML += message.charAt(charIndex);
+                }
+                charIndex++;
+                setTimeout(typeWriter, 50); // Velocidade de digitação (50ms)
+            }
+        }
+        setTimeout(typeWriter, 500); // Começa a escrever após meio segundo
+
+        // --- 2. CONTADOR DE TEMPO ---
+        // ATENÇÃO: Altere os valores abaixo para a data em que começaram a namorar.
+        // Formato: (Ano, Mês, Dia) -> Nota: O mês começa no 0 (0 = Janeiro, 8 = Setembro, 11 = Dezembro)
+        const startDate = new Date(2022, 8, 21); // Exemplo: 21 de Setembro de 2022
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("timer").innerText = 
+                `${days} dias ${hours} horas ${minutes} minutos ${seconds} segundos`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // --- 3. DESENHO DA ÁRVORE COM FLORES (CANVAS) ---
+        const canvas = document.getElementById('treeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function drawTrunk() {
+            // Desenhar o tronco principal
+            ctx.beginPath();
+            ctx.moveTo(250, 600); // Base do tronco
+            ctx.quadraticCurveTo(240, 400, 250, 250); // Curva até ao topo
+            ctx.lineWidth = 14;
+            ctx.strokeStyle = '#4a2f1d';
+            ctx.stroke();
+
+            // Desenhar pequenos ramos
+            ctx.beginPath();
+            ctx.moveTo(247, 350);
+            ctx.quadraticCurveTo(200, 300, 180, 280);
+            ctx.moveTo(248, 400);
+            ctx.quadraticCurveTo(300, 320, 320, 300);
+            ctx.lineWidth = 5;
+            ctx.stroke();
+        }
+
+        // Criar as coordenadas das flores usando a fórmula matemática de um coração
+        const flowers = [];
+        for (let t = 0; t < Math.PI * 2; t += 0.02) {
+            let x = 16 * Math.pow(Math.sin(t), 3);
+            let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+
+            // Ajustar tamanho e posição no ecrã
+            x = x * 10 + 250;
+            y = -y * 10 + 200;
+
+            // Criar um aglomerado de flores para preencher o coração
+            for (let i = 0; i < 4; i++) {
+                flowers.push({
+                    x: x + (Math.random() - 0.5) * 45,
+                    y: y + (Math.random() - 0.5) * 45,
+                    size: Math.random() * 4 + 3
+                });
+            }
+        }
+
+        // Baralhar a ordem para que as flores apareçam de forma orgânica e aleatória
+        flowers.sort(() => Math.random() - 0.5);
+
+        let flowerIndex = 0;
+        function drawFlowers() {
+            if (flowerIndex < flowers.length) {
+                // Desenhar 6 flores por frame para criar a animação de florescimento
+                for (let i = 0; i < 6; i++) {
+                    if (flowerIndex >= flowers.length) break;
+                    const f = flowers[flowerIndex];
+
+                    // Pétalas (Amarelo)
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+                    ctx.fillStyle = '#FFD700';
+                    ctx.fill();
+
+                    // Centro do girassol (Castanho)
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, f.size / 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = '#8B4513';
+                    ctx.fill();
+
+                    flowerIndex++;
+                }
+                requestAnimationFrame(drawFlowers);
+            }
+        }
+
+        // Executar as animações
+        drawTrunk();
+        setTimeout(drawFlowers, 1200); // Esperar 1.2 segundos para começar a florir
+
+    </script>
+</body>
+</html>
